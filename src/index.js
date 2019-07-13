@@ -13,6 +13,7 @@ import { HashHistory } from './history/hash'
 import { HTML5History } from './history/html5'
 import { AbstractHistory } from './history/abstract'
 
+// 导入Matcher类型
 import type { Matcher } from './create-matcher'
 
 export default class VueRouter {
@@ -25,6 +26,7 @@ export default class VueRouter {
   readyCbs: Array<Function>;
   options: RouterOptions;
   mode: string;
+  // 路由的三种模式，hash模式、history模式、NodeJs环境模式
   history: HashHistory | HTML5History | AbstractHistory;
   matcher: Matcher;
   fallback: boolean;
@@ -33,6 +35,7 @@ export default class VueRouter {
   afterHooks: Array<?AfterNavigationHook>;
 
   constructor (options: RouterOptions = {}) {
+    // 初始化相关信息
     this.app = null
     this.apps = []
     this.options = options
@@ -42,11 +45,13 @@ export default class VueRouter {
     this.matcher = createMatcher(options.routes || [], this)
 
     let mode = options.mode || 'hash'
+    // 判断路由模式是否为 history 模式
+    // !supportsPushState 语句的值极可能是 false ?
     this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false
-    if (this.fallback) {
-      mode = 'hash'
+    if (this.fallback) { // 如果不是 history 模式 ？
+      mode = 'hash' // 为什么要把 mode 赋值为 hash ？
     }
-    if (!inBrowser) {
+    if (!inBrowser) {// 是否为浏览器的判断
       mode = 'abstract'
     }
     this.mode = mode
@@ -62,12 +67,15 @@ export default class VueRouter {
         this.history = new AbstractHistory(this, options.base)
         break
       default:
+        // 判断是否为开发环境
         if (process.env.NODE_ENV !== 'production') {
+          // 抛出警告
           assert(false, `invalid mode: ${mode}`)
         }
     }
   }
-
+  
+  // 匹配方法
   match (
     raw: RawLocation,
     current?: Route,
@@ -75,18 +83,20 @@ export default class VueRouter {
   ): Route {
     return this.matcher.match(raw, current, redirectedFrom)
   }
-
+  
+  // 返回当前的route
   get currentRoute (): ?Route {
     return this.history && this.history.current
   }
 
   init (app: any /* Vue component instance */) {
+    // 开发环境判断
     process.env.NODE_ENV !== 'production' && assert(
-      install.installed,
+      install.installed, // 是否注册过
       `not installed. Make sure to call \`Vue.use(VueRouter)\` ` +
       `before creating root instance.`
     )
-
+    // app 已经给了解释：vue 组件的实例
     this.apps.push(app)
 
     // set up app destroyed handler
@@ -235,6 +245,7 @@ function registerHook (list: Array<any>, fn: Function): Function {
   }
 }
 
+// hash 模式下的路由拼接
 function createHref (base: string, fullPath: string, mode) {
   var path = mode === 'hash' ? '#' + fullPath : fullPath
   return base ? cleanPath(base + '/' + path) : path
@@ -243,6 +254,7 @@ function createHref (base: string, fullPath: string, mode) {
 VueRouter.install = install
 VueRouter.version = '__VERSION__'
 
+// vue-router 使用环境判断
 if (inBrowser && window.Vue) {
   window.Vue.use(VueRouter)
 }
