@@ -37,7 +37,7 @@ export function getStateKey () {
   return _key
 }
 
-// 返回key
+// 设置key
 export function setStateKey (key: string) {
   _key = key
 }
@@ -48,7 +48,7 @@ export function pushState (url?: string, replace?: boolean) {
   // try...catch the pushState call to get around Safari
   // DOM Exception 18 where it limits to 100 pushState calls
   const history = window.history
-  try { // 兼容写法，为了处理某些浏览器下即使有history API .方法不一致
+  try { // 兼容写法，为了处理某些浏览器下 history API .方法不一致
     if (replace) { // 如果是 replace 
       history.replaceState({ key: _key }, '', url) // 调用history的replaceState方法
     } else { // 否则 push
