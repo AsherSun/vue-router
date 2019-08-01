@@ -12,10 +12,10 @@ export function resolvePath (
     return relative
   }
 
-  if (firstChar === '?' || firstChar === '#') {// hash 模式的路径拼接
+  if (firstChar === '?' || firstChar === '#') { // hash 模式的路径拼接
     return base + relative
   }
-  
+
   // 获取路径上的所有路由 path 可以理解为堆栈数据结构
   const stack = base.split('/')
 
