@@ -1,6 +1,7 @@
 /* @flow */
 
 export function assert (condition: any, message: string) {
+  // 条件为 假时, 抛错
   if (!condition) {
     throw new Error(`[vue-router] ${message}`)
   }

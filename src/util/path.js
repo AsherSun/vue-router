@@ -74,7 +74,7 @@ export function parsePath (path: string): {
   }
 }
 
-// 清除路径
+// 清洗路径，将路径上多余的 "/" 清洗掉
 export function cleanPath (path: string): string {
   return path.replace(/\/\//g, '/')
 }
