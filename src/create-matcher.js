@@ -28,14 +28,19 @@ export function createMatcher (
     currentRoute?: Route,
     redirectedFrom?: Location
   ): Route {
+    // normalizeLocation 方法输出vue-router标准的route信息
     const location = normalizeLocation(raw, currentRoute, false, router)
+    // 拿到route.name
     const { name } = location
 
     if (name) {
+      // 拿到根据名称映射的路由信息
       const record = nameMap[name]
       if (process.env.NODE_ENV !== 'production') {
+        // 如果没有相关路由信息，抛错
         warn(record, `Route with name '${name}' does not exist`)
       }
+      // 没有相关路由信息, 根据当前的location.href 创建相关路由信息
       if (!record) return _createRoute(null, location)
       const paramNames = record.regex.keys
         .filter(key => !key.optional)
@@ -45,6 +50,7 @@ export function createMatcher (
         location.params = {}
       }
 
+      // 给location 对象添加 params相关信息
       if (currentRoute && typeof currentRoute.params === 'object') {
         for (const key in currentRoute.params) {
           if (!(key in location.params) && paramNames.indexOf(key) > -1) {
@@ -54,8 +60,9 @@ export function createMatcher (
       }
 
       location.path = fillParams(record.path, location.params, `named route "${name}"`)
+      // 返回创建的路由信息
       return _createRoute(record, location, redirectedFrom)
-    } else if (location.path) {
+    } else if (location.path) { // 如果路径存在，通过路径队列匹配。并创建相关路由信息
       location.params = {}
       for (let i = 0; i < pathList.length; i++) {
         const path = pathList[i]
@@ -69,6 +76,7 @@ export function createMatcher (
     return _createRoute(null, location)
   }
 
+  // 重定向处理
   function redirect (
     record: RouteRecord,
     location: Location
@@ -131,6 +139,7 @@ export function createMatcher (
     }
   }
 
+  // 路由别名处理
   function alias (
     record: RouteRecord,
     location: Location,
@@ -155,12 +164,15 @@ export function createMatcher (
     location: Location,
     redirectedFrom?: Location
   ): Route {
+    // 如果路由信息存在并且有重定向信息
     if (record && record.redirect) {
+      // 返回调用的重定向
       return redirect(record, redirectedFrom || location)
     }
     if (record && record.matchAs) {
       return alias(record, location, record.matchAs)
     }
+    // 返回创建的路由
     return createRoute(record, location, redirectedFrom, router)
   }
 

@@ -39,7 +39,7 @@ export function normalizeLocation (
     }
     return next
   }
-  
+
   // 拿到解析出来的路径
   const parsedPath = parsePath(next.path || '')
   // 拿到基本路径
@@ -54,7 +54,7 @@ export function normalizeLocation (
     next.query,
     router && router.options.parseQuery
   )
-  
+
   let hash = next.hash || parsedPath.hash
   if (hash && hash.charAt(0) !== '#') {
     hash = `#${hash}`

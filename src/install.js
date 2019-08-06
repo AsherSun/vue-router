@@ -11,14 +11,14 @@ export function install (Vue) {
   install.installed = true
 
   _Vue = Vue
-  
+
   // 对变量是否为undefined的判断方法
   const isDef = v => v !== undefined
-  
+
   // 注册实例
   // vm 为 vue实例
   const registerInstance = (vm, callVal) => {
-    // 拿到 parentNode 
+    // 拿到 parentNode
     let i = vm.$options._parentVnode
     // isDef(i = i.data) 语句其实可以看作 isDef(i.data), i = i.data;
     // isDef(i = i.registerRouteInstance) 同理
@@ -29,7 +29,7 @@ export function install (Vue) {
       i(vm, callVal)
     }
   }
-  
+
   // vue 对象混入功能
   Vue.mixin({
     // vue 钩子函数
@@ -52,14 +52,13 @@ export function install (Vue) {
       // 调用实例注册方法
       registerInstance(this, this)
     },
-    
+
     // 当前 vue 实例销毁钩子
     destroyed () {
       registerInstance(this)
     }
   })
-  
-  
+
   // 在当前的vue实例的 prototype 挂载 $router、$route 属性
   Object.defineProperty(Vue.prototype, '$router', {
     get () { return this._routerRoot._router }
@@ -68,12 +67,12 @@ export function install (Vue) {
   Object.defineProperty(Vue.prototype, '$route', {
     get () { return this._routerRoot._route }
   })
-  
+
   // 组件注册
   Vue.component('RouterView', View)
   Vue.component('RouterLink', Link)
-  
-  // 拿到 vue 的合并策略, 通过合并策略可以决定钩子的执行先后 
+
+  // 拿到 vue 的合并策略, 通过合并策略可以决定钩子的执行先后
   const strats = Vue.config.optionMergeStrategies
   // use the same hook merging strategy for route hooks
   // 对路由的钩子函数使用与vue相同的合并策略

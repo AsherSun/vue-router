@@ -51,7 +51,7 @@ export default class VueRouter {
     if (this.fallback) { // 如果不是 history 模式 ？
       mode = 'hash' // 为什么要把 mode 赋值为 hash ？
     }
-    if (!inBrowser) {// 是否为浏览器的判断
+    if (!inBrowser) { // 是否为浏览器的判断
       mode = 'abstract'
     }
     this.mode = mode
@@ -74,7 +74,7 @@ export default class VueRouter {
         }
     }
   }
-  
+
   // 匹配方法
   match (
     raw: RawLocation,
@@ -83,7 +83,7 @@ export default class VueRouter {
   ): Route {
     return this.matcher.match(raw, current, redirectedFrom)
   }
-  
+
   // 返回当前的route
   get currentRoute (): ?Route {
     return this.history && this.history.current

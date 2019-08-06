@@ -31,6 +31,7 @@ export function createRoute (
   if (redirectedFrom) {
     route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery)
   }
+  // Object.freeze 对象冻结。安全操作
   return Object.freeze(route)
 }
 

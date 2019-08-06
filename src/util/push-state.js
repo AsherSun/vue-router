@@ -42,20 +42,19 @@ export function setStateKey (key: string) {
   _key = key
 }
 
-
 export function pushState (url?: string, replace?: boolean) {
   saveScrollPosition() // 保存当前页面的滚动条位置
   // try...catch the pushState call to get around Safari
   // DOM Exception 18 where it limits to 100 pushState calls
   const history = window.history
   try { // 兼容写法，为了处理某些浏览器下 history API .方法不一致
-    if (replace) { // 如果是 replace 
+    if (replace) { // 如果是 replace
       history.replaceState({ key: _key }, '', url) // 调用history的replaceState方法
     } else { // 否则 push
       _key = genKey()
       history.pushState({ key: _key }, '', url)
     }
-  } catch (e) {//  捕捉错误, 调用另一种浏览器实现的 history的方法
+  } catch (e) { //  捕捉错误, 调用另一种浏览器实现的 history的方法
     window.location[replace ? 'replace' : 'assign'](url)
   }
 }

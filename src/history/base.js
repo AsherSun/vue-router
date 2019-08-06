@@ -18,13 +18,16 @@ export class History {
   base: string
   current: Route
   pending: ?Route
-  cb: (r: Route) => void
+  cb: (r: Route) => void // 回调方法
   ready: boolean
-  readyCbs: Array<Function>
+  readyCbs: Array<Function> // ready事件队列
   readyErrorCbs: Array<Function>
   errorCbs: Array<Function>
 
   // implemented by sub-classes
+  // 由子类实现
+  // 语法是什么意思？
+  // +xx: () => void; 定义方法签名但不包含方法体(类似ts中的abstract的关键字)
   +go: (n: number) => void
   +push: (loc: RawLocation) => void
   +replace: (loc: RawLocation) => void
@@ -43,10 +46,12 @@ export class History {
     this.errorCbs = []
   }
 
+  // 事件绑定
   listen (cb: Function) {
     this.cb = cb
   }
 
+  // onReady 事件
   onReady (cb: Function, errorCb: ?Function) {
     if (this.ready) {
       cb()
@@ -58,6 +63,7 @@ export class History {
     }
   }
 
+  // 错误事件队列
   onError (errorCb: Function) {
     this.errorCbs.push(errorCb)
   }
@@ -67,7 +73,9 @@ export class History {
     onComplete?: Function,
     onAbort?: Function
   ) {
+    // 拿到当前路由信息
     const route = this.router.match(location, this.current)
+    //
     this.confirmTransition(
       route,
       () => {
