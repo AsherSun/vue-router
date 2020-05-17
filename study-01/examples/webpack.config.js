@@ -1,9 +1,8 @@
-const fs = require('fs')
+// const fs = require('fs')
 const path = require('path')
 const VuePlugin = require('vue-loader/lib/plugin')
-console.log('__dirname', __dirname)
+
 module.exports = {
-  // Expose __dirname to allow automatically setting basename.
   context: __dirname,
   node: {
     __dirname: true
@@ -11,21 +10,15 @@ module.exports = {
 
   mode: process.env.NODE_ENV || 'development',
 
-  entry: fs.readdirSync(__dirname).reduce((entries, dir) => {
-    const fullDir = path.join(__dirname, dir)
-    const entry = path.join(fullDir, 'app.js')
-    if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
-      entries[dir] = ['es6-promise/auto', entry]
-    }
-    // console.log('__entries__', entries)
-    return entries
-  }, {}),
+  entry: {
+    history: './history/main.js'
+  },
 
   output: {
-    path: path.join(__dirname, '__build__'),
+    path: path.join(__dirname, '__study__'),
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
-    publicPath: '/__build__/'
+    publicPath: '__study__'
   },
 
   module: {
@@ -48,8 +41,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      vue: 'vue/dist/vue.esm.js',
-      'vue-router': path.join(__dirname, '..', 'src')
+      vue: 'vue/dist/vue.esm.js'
     }
   },
 

@@ -20,6 +20,7 @@ export function install (Vue) {
   const registerInstance = (vm, callVal) => {
     // 拿到 parentNode
     let i = vm.$options._parentVnode
+    console.log('i', i)
     // isDef(i = i.data) 语句其实可以看作 isDef(i.data), i = i.data;
     // isDef(i = i.registerRouteInstance) 同理
     // 那么这个 i 最后到底是什么呢？
@@ -59,9 +60,10 @@ export function install (Vue) {
     }
   })
 
-  // 在当前的vue实例的 prototype 挂载 $router、$route 属性
   Object.defineProperty(Vue.prototype, '$router', {
-    get () { return this._routerRoot._router }
+    get () {
+      return this._routerRoot._router
+    }
   })
 
   Object.defineProperty(Vue.prototype, '$route', {
