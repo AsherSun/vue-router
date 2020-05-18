@@ -1,4 +1,4 @@
-/*global HISTORYBASE */
+/*global DEFAULTBASE */
 /*eslint no-undef: "error"*/
 import Vue from 'vue'
 // import routes from 'routes'
@@ -8,7 +8,7 @@ import NotFound from './components/404.vue'
 new Vue({
   data: () => ({
     currentRoute: window.location.pathname,
-    n: 0
+    n: window.history.length
   }),
   render: function (h) {
     return h('div', {
@@ -16,7 +16,7 @@ new Vue({
         id: 'app'
       }
     }, [
-      h('h1', {}, 'History'),
+      h('h1', {}, 'A 链接跳转行为'),
       h('pre', {
         attrs: {
           id: 'counter'
@@ -36,21 +36,21 @@ new Vue({
           h('li', {}, [
             h('a', {
               attrs: {
-                href: `${HISTORYBASE}/`
+                href: `${DEFAULTBASE}/`
               }
             }, 'Home')
           ]),
           h('li', {}, [
             h('a', {
               attrs: {
-                href: `${HISTORYBASE}/hello`
+                href: `${DEFAULTBASE}/hello`
               }
             }, 'HelloWord')
           ]),
           h('li', {}, [
             h('a', {
               attrs: {
-                href: `${HISTORYBASE}/xxx`
+                href: `${DEFAULTBASE}/xxx`
               }
             }, 'not route info')
           ])
@@ -59,11 +59,14 @@ new Vue({
       ])
     ])
   },
+  created () {
+    console.log('created', window.history.length)
+  },
   computed: {
     getCurrentView () {
       console.log('routes', routes)
       console.log('__dirname', __dirname)
-      console.log('HISTORYBASE', HISTORYBASE)
+      console.log('DEFAULTBASE', DEFAULTBASE)
       // routes[]
       return routes[this.currentRoute] || NotFound
     }

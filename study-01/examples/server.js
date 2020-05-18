@@ -8,7 +8,7 @@ const app = express()
 
 app.use(
   webpackDevMiddleware(webpack(WebpackConfig), {
-    publicPath: '__study__',
+    publicPath: '/__study__/',
     stats: {
       colors: true,
       chunks: false
@@ -21,7 +21,7 @@ const path = require('path')
 
 fs.readdirSync(__dirname).forEach(file => {
   if (fs.statSync(path.join(__dirname, file)).isDirectory()) {
-    app.use(rewrite('/' + file + '/*', '/' + 'file' + 'index.html'))
+    app.use(rewrite('/' + file + '/*', '/' + file + '/index.html'))
   }
 })
 
