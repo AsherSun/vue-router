@@ -1,7 +1,5 @@
 /*global DEFAULTBASE */
-/*eslint no-undef: "error"*/
 import Vue from 'vue'
-// import routes from 'routes'
 import routes from './routes'
 import NotFound from './components/404.vue'
 
@@ -59,18 +57,9 @@ new Vue({
       ])
     ])
   },
-  created () {
-    console.log('created', window.history.length)
-  },
   computed: {
     getCurrentView () {
-      console.log('routes', routes)
-      console.log('__dirname', __dirname)
-      console.log('DEFAULTBASE', DEFAULTBASE)
-      // routes[]
       return routes[this.currentRoute] || NotFound
     }
-  },
-  methods: {
   }
 }).$mount('#app')
