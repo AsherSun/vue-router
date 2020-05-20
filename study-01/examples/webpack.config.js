@@ -67,7 +67,8 @@ module.exports = {
     new VuePlugin(),
     new webpack.DefinePlugin({
       DEFAULTBASE: JSON.stringify('/default'),
-      HISTORYBASE: JSON.stringify('/history')
+      HISTORYBASE: JSON.stringify('/history'),
+      HASHBASE: JSON.stringify('/hash')
     })
   ]
 }

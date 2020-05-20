@@ -1,13 +1,12 @@
-/*global HISTORYBASE */
+/*global HASHBASE */
 /*eslint no-undef: "error"*/
 import Vue from 'vue'
-// import routes from 'routes'
 import routes from './routes'
 import NotFound from './components/404.vue'
 
-const app = new Vue({
+new Vue({
   data: () => ({
-    currentRoute: window.location.pathname,
+    currentRoute: window.location.pathname + window.location.hash,
     n: 0,
     history: window.history
   }),
@@ -17,7 +16,7 @@ const app = new Vue({
         id: 'app'
       }
     }, [
-      h('h1', {}, 'History'),
+      h('h1', {}, 'Hash'),
       h('pre', {
         attrs: {
           id: 'counter'
@@ -37,30 +36,30 @@ const app = new Vue({
           h('li', {}, [
             h('a', {
               attrs: {
-                href: `${HISTORYBASE}/`
+                href: `${HASHBASE}`
               },
               on: {
-                click: (e) => this.clickToJump(e, `/`)
+                click: (e) => this.clickToJump(e, ``)
               }
             }, 'Home')
           ]),
           h('li', {}, [
             h('a', {
               attrs: {
-                href: `${HISTORYBASE}/hello`
+                href: `${HASHBASE}#hello`
               },
               on: {
-                click: (e) => this.clickToJump(e, `/hello`)
+                click: (e) => this.clickToJump(e, `#hello`)
               }
             }, 'HelloWord')
           ]),
           h('li', {}, [
             h('a', {
               attrs: {
-                href: `${HISTORYBASE}/xxx`
+                href: `${HASHBASE}#xxx`
               },
               on: {
-                click: (e) => this.clickToJump(e, '/xxx')
+                click: (e) => this.clickToJump(e, '#xxx')
               }
             }, 'not route info')
           ])
@@ -73,9 +72,12 @@ const app = new Vue({
     window.addEventListener('popstate', () => {
       // history.pushState 与 history.replaceState 不会触发 popstate事件
       // 所以vue-router中是怎么处理的？
-      app.currentRoute = window.location.pathname
-      console.log('app.currentRoute', app.currentRoute, window.location.pathname)
+      console.log('popstate', window.location)
     })
+    // window.addEventListener('hashchange', () => {
+    //   // console.log(e)
+    //   console.log('window.location.hash', window.location.hash)
+    // })
   },
   computed: {
     getCurrentView () {
@@ -85,9 +87,9 @@ const app = new Vue({
   methods: {
     clickToJump (e, href) {
       e.preventDefault()
-      this.history.pushState({ test: '我是test内容', key: Date.now().toFixed(3) }, '', HISTORYBASE + href)
-      // 这是处理pushState 与 replaceState 不会触发 popstate 事件的一种方式
-      this.currentRoute = HISTORYBASE + href
+      // this.history.pushState({ test: '我是test内容', key: Date.now().toFixed(3) }, '', HASHBASE + href)
+      window.location.hash = href
+      this.currentRoute = HASHBASE + href
     }
   }
 }).$mount('#app')
